@@ -1,4 +1,4 @@
-package com.core.booking;
+package com.core.booking.flight;
 
 public class FlightBooking {
     public int flightId;
@@ -18,7 +18,6 @@ public class FlightBooking {
     }
     public FlightBooking(FlightBooking[]fBooking){
     }
-
     public String HotelDetails() {
         return "FlightBoking{" +
                 "FlightId= '"+ flightId + '\''+

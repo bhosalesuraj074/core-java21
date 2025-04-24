@@ -1,4 +1,4 @@
-package com.core.booking;
+package com.core.booking.flight;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -21,7 +21,7 @@ public class FlightBookingService {
         do {
 
             System.out.println("**************************************************************************************************************");
-            System.out.println("1: Display all the flight\n2: update the flight record\n3.delete the record by Id\n4.delete the all records\n5.exit");
+            System.out.println("1: Display all the flight\n2: update the flight record\n3: delete the record by Id\n4: delete the all records\n5: exit");
             System.out.println("------------------------------------");
             System.out.println("Please enter your choice");
             choice = sc.nextInt();
@@ -29,7 +29,7 @@ public class FlightBookingService {
             switch (choice) {
 
 
-                 /*there in this budge code we don't remove the element from the just assign null which record we want to delete,
+                 /*there in this bug code we don't remove the element from the just assign null which record we want to delete,
                  due to array are the fixed size once its initialized then , we can't able to modify the array size
                 */
                 case 1:
@@ -39,7 +39,6 @@ public class FlightBookingService {
                         System.out.println("No record found");
                     }
                     break;
-
 
                 case 2:
                     System.out.println("Please enter the flightId of record which you want update");
@@ -71,7 +70,6 @@ public class FlightBookingService {
                         System.out.println("No such record found");
                     }
                     break;
-
 
                 case 4 :
 
