@@ -36,8 +36,54 @@ public class HotelBookingService {
                         break;
 
                 case 3:
+                        int updateHotelId=0;
+                        boolean flag=false;
+                        System.out.println("Please enter the hotel id record which you want to update");
+                        updateHotelId = sc.nextInt();
+                        for (Hotel h : hotels){
+                            if(h.hotelId == updateHotelId){
+                                HotelBookingService.updateHotelDetails(h);
+                                flag = true;
+                            }
+                        }
+                        if (flag) System.out.println("Record updated successfully");
+                        else System.out.println("please enter the valid hotelId");
+                        break;
 
+                case 4:
+                        int deleteId=0;
+                        boolean deleteFlag=false;
+                        int counter=0;
 
+                        System.out.println("Please enter the record hotel id which you want to delete");
+                        deleteId = sc.nextInt();
+                        for (Hotel h : hotels){
+                            if(h !=null && h.hotelId == deleteId){
+                              hotels[counter]= HotelBookingService.deleteHotelRecord(h);
+                                deleteFlag = true;
+                            }
+                            counter++;
+                        }
+                        if (deleteFlag) System.out.println("record trashed ...");
+                        else System.out.println("please enter the valid hotel");
+                        break;
+
+                case 5:
+                        System.out.println("Are you want delete all records if so please type 'yes' ");
+                        String isDelete= sc.next();
+                        counter=0;
+                        if (isDelete.toLowerCase().matches("yes")){
+                            for (Hotel h : hotels){
+                                hotels[counter]= HotelBookingService.deleteHotelRecord(h);
+                                counter++;
+                            }
+                        }else{
+                            System.out.println("Delete operation cancelled");
+                        }
+                        break;
+                case 6:
+                       System.exit(0);
+                       break;
             }
         }while (choise != 6);
 
@@ -52,6 +98,7 @@ public class HotelBookingService {
                 new Hotel(105, "Urban Retreat", "Bangalore", "2025-JULY", "Executive"),
         };
     }
+
 // Display the all the records
     public static void DisplayRecords(Hotel []hotels){
         System.out.println("Below are the listed hotels");
@@ -61,7 +108,7 @@ public class HotelBookingService {
             }
         }
     }
-
+    
 // insert the new records
     public static Hotel[] insertNewHotel(Hotel [] hotels){
         // setting the hotel details by passing the length of array for the id
@@ -100,5 +147,31 @@ public class HotelBookingService {
     }
 
     // updating the records by passing the id
+    public static Hotel updateHotelDetails(Hotel h){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Current Hotel Name: "+ h.hotelName);
+        System.out.println("Enter new hotel Name");
+        h.hotelName= sc.next();
+
+        System.out.println("Current Hotel location: "+ h.location);
+        System.out.println("Enter new hotel location");
+        h.location= sc.next();
+
+        System.out.println("Current check-in: "+ h.hotelName);
+        System.out.println("Enter new check-in date");
+        h.checkIn= sc.next();
+
+        System.out.println("Current Room type: "+ h.hotelName);
+        System.out.println("Enter new Room type");
+        h.roomType= sc.next();
+
+        return h;
+
+    }
+    // delete record by id
+    public static Hotel deleteHotelRecord(Hotel h){
+        h=null;
+        return h;
+    }
 
 }
