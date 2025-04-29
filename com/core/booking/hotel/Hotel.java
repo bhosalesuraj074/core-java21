@@ -14,7 +14,6 @@ public  Hotel(){}
         this.location = location;
         this.checkIn = checkIn;
         this.roomType = roomType;
-
     }
 
     public String HotelDetails() {

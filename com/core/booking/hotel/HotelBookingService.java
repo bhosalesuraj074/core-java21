@@ -16,7 +16,7 @@ public class HotelBookingService {
         // dummy hotel object having size 3
         Hotel []hotels= new Hotel[3];
         // default initialization for the hotel object
-        Hotel dummyHotels[]  = HotelBookingService.defaultInitialization();
+        Hotel[] dummyHotels = HotelBookingService.defaultInitialization();
         // Increasing the size of the hotel object with help Arrays class
         hotels = Arrays.copyOf(dummyHotels, dummyHotels.length);
         do{
@@ -42,7 +42,7 @@ public class HotelBookingService {
                         updateHotelId = sc.nextInt();
                         for (Hotel h : hotels){
                             if(h.hotelId == updateHotelId){
-                                HotelBookingService.updateHotelDetails(h);
+                                System.out.println(HotelBookingService.updateHotelDetails(h).HotelDetails());
                                 flag = true;
                             }
                         }
@@ -82,7 +82,7 @@ public class HotelBookingService {
                         }
                         break;
                 case 6:
-                       System.exit(0);
+
                        break;
             }
         }while (choise != 6);
@@ -117,15 +117,8 @@ public class HotelBookingService {
         // Increase array size by 1
         int length = hotels.length + 1;
         Hotel[] arr = Arrays.copyOf(hotels, length);
-
-        if (h != null) {
-            arr[length - 1] = h;
-            System.out.println("Hola! record added successfully");
-        }
-        else {
-            System.out.println("please enter valid details");
-            return  hotels;
-        }
+        arr[length - 1] = h;
+        System.out.println("Hola! record added successfully");
         return  arr;
     }
 
@@ -168,7 +161,7 @@ public class HotelBookingService {
         return h;
 
     }
-    // delete record by id
+    // delete record by assigning the 'null' value to the hotel object
     public static Hotel deleteHotelRecord(Hotel h){
         h=null;
         return h;
