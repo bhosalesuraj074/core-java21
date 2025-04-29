@@ -1,13 +1,17 @@
 package com.core.booking.hotel;
 
-public class Hotel {
-    public int hotelId;
-    public  String hotelName;
-    public String location;
+public class Hotel extends HotelBase{
+
     public String checkIn;
     public String roomType;
 
-public  Hotel(){}
+    public  Hotel(){}
+
+    public Hotel(String checkIn, String roomType) {
+        this.checkIn = checkIn;
+        this.roomType = roomType;
+    }
+
     public Hotel(int hotelId, String hotelName, String location, String checkIn, String roomType ){
         this.hotelId = hotelId;
         this.hotelName = hotelName;

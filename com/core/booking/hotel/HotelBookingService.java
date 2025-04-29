@@ -20,10 +20,10 @@ public class HotelBookingService {
         // Increasing the size of the hotel object with help Arrays class
         hotels = Arrays.copyOf(dummyHotels, dummyHotels.length);
         do{
-            System.out.println("---------------------------------------------------------------------------------------------");
-            System.out.println("\n 1: Display Hotels \n 2: Insert new hotel details \n 3: Update hotel details \n 4: Delete hotel record by id \n 5: Delete All hotel records \n 6: exit");
+            printMsg("---------------------------------------------------------------------------------------------");
+            printMsg("\n 1: Display Hotels \n 2: Insert new hotel details \n 3: Update hotel details \n 4: Delete hotel record by id \n 5: Delete All hotel records \n 6: exit");
             System.out.println();
-            System.out.println("Please enter you choice");
+            printMsg("Please enter you choice");
             choise = sc.nextInt();
             switch (choise){
 
@@ -38,7 +38,7 @@ public class HotelBookingService {
                 case 3:
                         int updateHotelId=0;
                         boolean flag=false;
-                        System.out.println("Please enter the hotel id record which you want to update");
+                        printMsg("Please enter the hotel id record which you want to update");
                         updateHotelId = sc.nextInt();
                         for (Hotel h : hotels){
                             if(h.hotelId == updateHotelId){
@@ -46,16 +46,15 @@ public class HotelBookingService {
                                 flag = true;
                             }
                         }
-                        if (flag) System.out.println("Record updated successfully");
-                        else System.out.println("please enter the valid hotelId");
+                        if (flag) printMsg("Record updated successfully");
+                        else printMsg("please enter the valid hotelId");
                         break;
 
                 case 4:
                         int deleteId=0;
                         boolean deleteFlag=false;
                         int counter=0;
-
-                        System.out.println("Please enter the record hotel id which you want to delete");
+                        printMsg("Please enter the record hotel id which you want to delete");
                         deleteId = sc.nextInt();
                         for (Hotel h : hotels){
                             if(h !=null && h.hotelId == deleteId){
@@ -64,12 +63,12 @@ public class HotelBookingService {
                             }
                             counter++;
                         }
-                        if (deleteFlag) System.out.println("record trashed ...");
-                        else System.out.println("please enter the valid hotel");
+                        if (deleteFlag) printMsg("record trashed ...");
+                        else printMsg("please enter the valid hotel");
                         break;
 
                 case 5:
-                        System.out.println("Are you want delete all records if so please type 'yes' ");
+                        printMsg("Are you want delete all records if so please type 'yes' ");
                         String isDelete= sc.next();
                         counter=0;
                         if (isDelete.toLowerCase().matches("yes")){
@@ -78,7 +77,7 @@ public class HotelBookingService {
                                 counter++;
                             }
                         }else{
-                            System.out.println("Delete operation cancelled");
+                            printMsg("Delete operation cancelled");
                         }
                         break;
                 case 6:
@@ -101,10 +100,10 @@ public class HotelBookingService {
 
 // Display the all the records
     public static void DisplayRecords(Hotel []hotels){
-        System.out.println("Below are the listed hotels");
+        printMsg("Below are the listed hotels");
         for (Hotel hotel: hotels){
             if (hotel != null) {
-                System.out.println(hotel.HotelDetails());
+                printMsg(hotel.HotelDetails());
             }
         }
     }
@@ -118,23 +117,23 @@ public class HotelBookingService {
         int length = hotels.length + 1;
         Hotel[] arr = Arrays.copyOf(hotels, length);
         arr[length - 1] = h;
-        System.out.println("Hola! record added successfully");
+        printMsg("Hola! record added successfully");
         return  arr;
     }
 
     // function get the details of new hotel
     public  static  Hotel setHotelDetails(int count){
         Scanner sc =new Scanner(System.in);
-        System.out.println("Please enter the new record");
+        printMsg("Please enter the new record");
         Hotel h = new Hotel();
         h.hotelId = 101+count;
-        System.out.println("Please enter the hotel name");
+        printMsg("Please enter the hotel name");
         h.hotelName = sc.next();
-        System.out.println("Please enter the location");
+        printMsg("Please enter the location");
         h.location = sc.next();
-        System.out.println("please enter the check-in date");
+        printMsg("please enter the check-in date");
         h.checkIn = sc.next();
-        System.out.println("please enter the roomType");
+        printMsg("please enter the roomType");
         h.roomType = sc.next();
         return h;
     }
@@ -142,20 +141,20 @@ public class HotelBookingService {
     // updating the records by passing the id
     public static Hotel updateHotelDetails(Hotel h){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Current Hotel Name: "+ h.hotelName);
-        System.out.println("Enter new hotel Name");
+        printMsg("Current Hotel Name: "+ h.hotelName);
+        printMsg("Enter new hotel Name");
         h.hotelName= sc.next();
 
-        System.out.println("Current Hotel location: "+ h.location);
+        printMsg("Current Hotel location: "+ h.location);
         System.out.println("Enter new hotel location");
         h.location= sc.next();
 
-        System.out.println("Current check-in: "+ h.hotelName);
+        printMsg("Current check-in: "+ h.hotelName);
         System.out.println("Enter new check-in date");
         h.checkIn= sc.next();
 
-        System.out.println("Current Room type: "+ h.hotelName);
-        System.out.println("Enter new Room type");
+        printMsg("Current Room type: "+ h.hotelName);
+        printMsg("Enter new Room type");
         h.roomType= sc.next();
 
         return h;
@@ -167,4 +166,8 @@ public class HotelBookingService {
         return h;
     }
 
+    //Printing the msg
+    public static  void printMsg(String msg){
+        System.out.println(msg);
+    }
 }
