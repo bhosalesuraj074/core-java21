@@ -1,18 +1,10 @@
 package com.core.booking.hotel;
 
-import com.core.booking.flight.FlightBooking;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
-abstract class HotelDetails {
-   abstract void DisplayRecords(Hotel []hotels);
-   abstract Hotel[] insertNewHotel(Hotel [] hotels);
-   abstract Hotel setHotelDetails(int count);
-   abstract Hotel updateHotelDetails(Hotel h);
-   abstract Hotel deleteHotelRecord(Hotel h);
-}
-public class HotelBookingService extends HotelDetails {
+
+public class HotelBookingService extends AbstractHotel {
 
     public static void main(String[] args) {
         // for getting i/p from the user
@@ -96,6 +88,7 @@ public class HotelBookingService extends HotelDetails {
 
     }
 
+
     public static Hotel[]  defaultInitialization(){
        return  new Hotel[] {
                 new Hotel(101, "Grand Palace", "Mumbai", "2025-APRIL", "Deluxe"),
@@ -106,7 +99,8 @@ public class HotelBookingService extends HotelDetails {
         };
     }
 
-// Display the all the records
+    // Display the all the records
+    @Override
     public void DisplayRecords(Hotel []hotels){
         printMsg("Below are the listed hotels");
         for (Hotel hotel: hotels){
@@ -116,7 +110,8 @@ public class HotelBookingService extends HotelDetails {
         }
     }
     
-// insert the new records
+    // insert the new records
+    @Override
     public  Hotel[] insertNewHotel(Hotel [] hotels){
         // setting the hotel details by passing the length of array for the id
         Hotel h = setHotelDetails(hotels.length);
@@ -130,6 +125,7 @@ public class HotelBookingService extends HotelDetails {
     }
 
     // function get the details of new hotel
+    @Override
     public   Hotel setHotelDetails(int count){
         Scanner sc =new Scanner(System.in);
         printMsg("Please enter the new record");
@@ -147,6 +143,7 @@ public class HotelBookingService extends HotelDetails {
     }
 
     // updating the records by passing the id
+    @Override
     public  Hotel updateHotelDetails(Hotel h){
         Scanner sc = new Scanner(System.in);
         printMsg("Current Hotel Name: "+ h.hotelName);
@@ -169,6 +166,7 @@ public class HotelBookingService extends HotelDetails {
 
     }
     // delete record by assigning the 'null' value to the hotel object
+    @Override
     public  Hotel deleteHotelRecord(Hotel h){
         h=null;
         return h;
