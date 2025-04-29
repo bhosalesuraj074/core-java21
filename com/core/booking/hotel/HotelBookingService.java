@@ -5,14 +5,22 @@ import com.core.booking.flight.FlightBooking;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class HotelBookingService {
+abstract class HotelDetails {
+   abstract void DisplayRecords(Hotel []hotels);
+   abstract Hotel[] insertNewHotel(Hotel [] hotels);
+   abstract Hotel setHotelDetails(int count);
+   abstract Hotel updateHotelDetails(Hotel h);
+   abstract Hotel deleteHotelRecord(Hotel h);
+}
+public class HotelBookingService extends HotelDetails {
 
     public static void main(String[] args) {
         // for getting i/p from the user
+
         Scanner sc = new Scanner(System.in);
         // for matching switch case
         int choise = 0;
-
+        HotelBookingService HBS= new HotelBookingService();
         // dummy hotel object having size 3
         Hotel []hotels= new Hotel[3];
         // default initialization for the hotel object
@@ -28,11 +36,11 @@ public class HotelBookingService {
             switch (choise){
 
                 case 1 :
-                         HotelBookingService.DisplayRecords(hotels);
+                        HBS.DisplayRecords(hotels);
                          break;
 
                 case 2 :
-                        hotels = Arrays.copyOf(HotelBookingService.insertNewHotel(hotels), hotels.length+1);
+                        hotels = Arrays.copyOf(HBS.insertNewHotel(hotels), hotels.length+1);
                         break;
 
                 case 3:
@@ -42,7 +50,7 @@ public class HotelBookingService {
                         updateHotelId = sc.nextInt();
                         for (Hotel h : hotels){
                             if(h.hotelId == updateHotelId){
-                                System.out.println(HotelBookingService.updateHotelDetails(h).HotelDetails());
+                                System.out.println(HBS.updateHotelDetails(h).HotelDetails());
                                 flag = true;
                             }
                         }
@@ -58,7 +66,7 @@ public class HotelBookingService {
                         deleteId = sc.nextInt();
                         for (Hotel h : hotels){
                             if(h !=null && h.hotelId == deleteId){
-                              hotels[counter]= HotelBookingService.deleteHotelRecord(h);
+                              hotels[counter]= HBS.deleteHotelRecord(h);
                                 deleteFlag = true;
                             }
                             counter++;
@@ -73,7 +81,7 @@ public class HotelBookingService {
                         counter=0;
                         if (isDelete.toLowerCase().matches("yes")){
                             for (Hotel h : hotels){
-                                hotels[counter]= HotelBookingService.deleteHotelRecord(h);
+                                hotels[counter]= HBS.deleteHotelRecord(h);
                                 counter++;
                             }
                         }else{
@@ -99,7 +107,7 @@ public class HotelBookingService {
     }
 
 // Display the all the records
-    public static void DisplayRecords(Hotel []hotels){
+    public void DisplayRecords(Hotel []hotels){
         printMsg("Below are the listed hotels");
         for (Hotel hotel: hotels){
             if (hotel != null) {
@@ -109,7 +117,7 @@ public class HotelBookingService {
     }
     
 // insert the new records
-    public static Hotel[] insertNewHotel(Hotel [] hotels){
+    public  Hotel[] insertNewHotel(Hotel [] hotels){
         // setting the hotel details by passing the length of array for the id
         Hotel h = setHotelDetails(hotels.length);
 
@@ -122,7 +130,7 @@ public class HotelBookingService {
     }
 
     // function get the details of new hotel
-    public  static  Hotel setHotelDetails(int count){
+    public   Hotel setHotelDetails(int count){
         Scanner sc =new Scanner(System.in);
         printMsg("Please enter the new record");
         Hotel h = new Hotel();
@@ -139,7 +147,7 @@ public class HotelBookingService {
     }
 
     // updating the records by passing the id
-    public static Hotel updateHotelDetails(Hotel h){
+    public  Hotel updateHotelDetails(Hotel h){
         Scanner sc = new Scanner(System.in);
         printMsg("Current Hotel Name: "+ h.hotelName);
         printMsg("Enter new hotel Name");
@@ -161,13 +169,13 @@ public class HotelBookingService {
 
     }
     // delete record by assigning the 'null' value to the hotel object
-    public static Hotel deleteHotelRecord(Hotel h){
+    public  Hotel deleteHotelRecord(Hotel h){
         h=null;
         return h;
     }
 
     //Printing the msg
-    public static  void printMsg(String msg){
+    public static void printMsg(String msg){
         System.out.println(msg);
     }
 }
