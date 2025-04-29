@@ -7,8 +7,7 @@ public class VarArgs {
     public void varArgs(boolean ...varArgs){
         System.out.println("Boolean value: "+ Arrays.toString(varArgs));
     }
-
-    // 
+    //
     public  void varArgs(int ...varArgs){
         System.out.println("single int Parameter"+ Arrays.toString(varArgs));
     }
