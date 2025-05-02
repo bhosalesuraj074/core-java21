@@ -29,7 +29,7 @@ public class HotelBookingService extends AbstractHotel {
 
                 case 1 :
                         HBS.DisplayRecords(hotels);
-                         break;
+                        break;
 
                 case 2 :
                         hotels = Arrays.copyOf(HBS.insertNewHotel(hotels), hotels.length+1);
