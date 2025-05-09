@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
-public class HotelBookingService extends AbstractHotel {
+public class HotelBookingService implements HotelDraft {
 
     public static void main(String[] args) {
         // for getting i/p from the user
@@ -173,6 +173,7 @@ public class HotelBookingService extends AbstractHotel {
     }
 
     //Printing the msg
+
     public static void printMsg(String msg){
         System.out.println(msg);
     }

@@ -16,7 +16,7 @@ public class StaticDemo {
        System.out.println("Static Demo constructor");
    }
    public  static  void staticMethod(){
-       // System.out.println(a); - can't access the non-static mebers in the static blocks or method
+       // System.out.println(a); - can't access the non-static members in the static blocks or method
        System.out.println(b);
    }
 

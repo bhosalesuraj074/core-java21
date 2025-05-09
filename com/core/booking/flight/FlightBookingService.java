@@ -102,11 +102,7 @@ public class FlightBookingService {
         Scanner sc =new Scanner(System.in);
         System.out.println("Details of the object");
         System.out.println(flight.HotelDetails());
-        /*  this.flightId = flightId;
-        this.airLine = airLine;
-        this.from =from;
-        this.to = to;
-        this.seatType = seatType;*/
+
         System.out.println("Current flightId: "+ flight.flightId);
 
         System.out.println("Current airLine: "+ flight.airLine);
