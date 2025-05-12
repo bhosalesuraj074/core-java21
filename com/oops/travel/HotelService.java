@@ -42,12 +42,28 @@ public class HotelService implements HotelRepo{
                         case 4:
                                 System.out.println("Please enter the record you want delete");
                                 int deleteId = sc.nextInt() - 101;
-                                deleteRecord(deleteId);
+                                try {
+                                    if (deleteId > hotels.size()) {
+                                            throw  new RecordNotFoundException();
+                                    } else {
+                                        deleteRecord(deleteId);
+                                    }
+                                }catch (RecordNotFoundException |ArrayIndexOutOfBoundsException ex){
+                                    System.out.println(ex.getMessage());
+                                }
                                 break;
 
                         case 5:
-
-                                deleteAllRecord();
+                                try {
+                                    if (hotels.isEmpty()) {
+                                        throw new RecordNotFoundException();
+                                    } else {
+                                        deleteAllRecord();
+                                    }
+                                }
+                                catch (RecordNotFoundException ex){
+                                    System.out.println(ex.getMessage());
+                                }
                                 break;
 
                         case 6: break;
@@ -67,16 +83,19 @@ public class HotelService implements HotelRepo{
     }
 
     @Override
-    public void displayDetails() {
-        if (hotels.isEmpty()){
-            System.out.println("Records not found ...!");
-        }
-        else {
-            System.out.println("Below are the Available hotels");
-            for (Hotel hotel : hotels) {
-                System.out.println(hotel);
+    public void displayDetails()  {
+    try {
+            if (hotels.isEmpty()) {
+                throw new RecordNotFoundException();
+            } else {
+                System.out.println("Below are the Available hotels");
+                for (Hotel hotel : hotels) {
+                    System.out.println(hotel);
+                }
             }
-        }
+    }catch (RecordNotFoundException rec){
+        System.out.println(rec.getMessage());
+    }
     }
 
     @Override
@@ -116,8 +135,9 @@ public class HotelService implements HotelRepo{
 
     @Override
     public void deleteRecord(int deleteId) {
-        hotels.remove(deleteId);
-        System.out.println("Hotel removed...!");
+            hotels.remove(deleteId);
+            System.out.println("Hotel removed...!");
+
     }
 
     @Override
