@@ -1,10 +1,9 @@
 package com.oops.travel;
 
-public interface HotelRepo {
+public interface BookingRepository<T> {
     void displayDetails();
-    Hotel insertDetails();
-    void updateDetails(Hotel h);
+    T insertDetails();
+    void updateDetails(T h);
     void deleteRecord(int deleteId);
     void deleteAllRecord();
-
 }
