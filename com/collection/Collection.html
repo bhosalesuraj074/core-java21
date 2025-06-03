@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Collections Hierarchy - Detailed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Close to Tailwind gray-200 */
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #1f2937; /* Tailwind gray-800 */
+        }
+
+        .hierarchy-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px; /* Reduced max-width for better responsiveness */
+        }
+
+        .interface-card {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 320px; /* Slightly wider cards */
+            min-height: 280px; /* Increased min-height for more content */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .interface-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            will-change: transform, box-shadow;
+        }
+
+        .interface-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .interface-version {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #166534;
+            background-color: #dcfce7;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            align-self: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .interface-description {
+            font-size: 0.875rem;
+            color: #4b5563;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .info-section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #374151; /* Tailwind gray-700 */
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-list {
+            font-size: 0.8rem; /* Smaller font for lists */
+            color: #4b5563;
+            list-style-type: disc;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+        .info-list code {
+            background-color: #d1d5db; /* Tailwind gray-300 */
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            border: 1px solid #9ca3af; /* Tailwind gray-400 */
+        }
+        }
+
+        .method-link {
+            cursor: pointer;
+            color: #1e40af;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .method-link:hover {
+            color: #1c3fa0;
+            text-decoration: none;
+        }
+
+
+        .title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Connector styling */
+        .parent-group-container {
+            display: flex;
+            justify-content: center; /* Center the single top-level parent */
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .parent-collection, .parent-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .children-group {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            position: relative;
+            padding-top: 40px;
+            margin-bottom: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .child-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 10px;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background-color: #dcfce7;
+            color: #166534;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+        
+       .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
+}
+
+.modal.visible {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+        .sub-children-group {
+            margin-top:20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .connector-line-vertical {
+            width: 2px;
+            background-color: #9ca3af;
+            margin: 0 auto;
+        }
+        .connector-line-horizontal {
+            height: 2px;
+            background-color: #9ca3af;
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 0;
+        }
+
+       
+
+        .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+    max-height: 80vh;  
+    overflow-y: auto; 
+}
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 1.75rem;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+
+        .modal-section-title {
+            font-size: 1.0rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-description, .modal-params, .modal-returns, .modal-throws {
+            font-size: 0.9rem;
+            color: #4b5563;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+        .modal-code {
+            background-color: #e5e7eb;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .modal-content .version-badge {
+    display: inline-block;
+    background-color: #dcfce7;
+    color: #166534;
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+    </style>
+</head>
+<body>
+    <h1 class="title">Java Collections Framework - Interface Hierarchy (Detailed)</h1>
+
+    <div class="hierarchy-container">
+        <div class="parent-collection">
+            <div class="interface-card" id="collection">
+                <div class="interface-name">Collection&lt;E&gt;</div>
+                <div class="interface-version">Since: JDK 1.2</div>
+                <div class="interface-description">The root interface in the collection hierarchy. Represents a group of objects.</div>
+                <div class="info-section-title">Key Methods:</div>
+                <ul class="info-list">
+                    <li><span class="method-link" data-method="add" data-interface="Collection"><code>add(E e)</code></span></li>
+                    <li><span class="method-link" data-method="remove" data-interface="Collection"><code>remove(Object o)</code></span></li>
+                    <li><span class="method-link" data-method="contains" data-interface="Collection"><code>contains(Object o)</code></span></li>
+                    <li><span class="method-link" data-method="size" data-interface="Collection"><code>size()</code></span></li>
+                    <li><span class="method-link" data-method="isEmpty" data-interface="Collection"><code>isEmpty()</code></span></li>
+                    <li><span class="method-link" data-method="iterator" data-interface="Collection"><code>iterator()</code></span></li>
+                    <li><span class="method-link" data-method="toArray" data-interface="Collection"><code>toArray()</code></span></li>
+                    <li><span class="method-link" data-method="clear" data-interface="Collection"><code>clear()</code></span></li>
+                    <li><span class="method-link" data-method="addAll" data-interface="Collection"><code>addAll(Collection&lt;? extends E&gt; c)</code></span></li>
+                    <li><span class="method-link" data-method="removeAll" data-interface="Collection"><code>removeAll(Collection&lt;?&gt; c)</code></span></li>
+                    <li><span class="method-link" data-method="retainAll" data-interface="Collection"><code>retainAll(Collection&lt;?&gt; c)</code></span></li>
+                    <li><span class="method-link" data-method="containsAll" data-interface="Collection"><code>containsAll(Collection&lt;?&gt; c)</code></span></li>
+                </ul>
+                <div class="info-section-title">Note:</div>
+                <p class="info-list" style="list-style-type:none; padding-left:0;">Typically implemented via its sub-interfaces. No direct concrete implementations are provided by the JDK for <code>Collection</code> itself.</p>
+            </div>
+        </div>
+
+        <div style="width: 100%; display: flex; justify-content: center; position: relative;">
+            <div class="connector-line-vertical" style="height: 30px; position: absolute; top: -30px;"></div>
+        </div>
+
+        <div class="children-group">
+            <div class="connector-line-horizontal" style="left: 10%; right: 10%; top: 20px;"></div>
+
+            <div class="child-item">
+                <div class="connector-line-vertical" style="height: 20px; position:relative; top: -20px;"></div>
+                <div class="interface-card" id="list">
+                    <div class="interface-name">List&lt;E&gt;</div>
+                    <div class="interface-version">Since: JDK 1.2</div>
+                    <div class="interface-description">Extends Collection. An ordered collection (sequence). Allows duplicate elements and nulls. Elements can be accessed by their integer index.</div>
+                    <div class="info-section-title">Key Methods:</div>
+                    <ul class="info-list">
+                        <li><span class="method-link" data-method="get" data-interface="List"><code>get(int index)</code></span></li>
+                        <li><span class="method-link" data-method="set" data-interface="List"><code>set(int index, E element)</code></span></li>
+                        <li><span class="method-link" data-method="add_index" data-interface="List"><code>add(int index, E element)</code></span></li>
+                        <li><span class="method-link" data-method="remove_index" data-interface="List"><code>remove(int index)</code></span></li>
+                        <li><span class="method-link" data-method="indexOf" data-interface="List"><code>indexOf(Object o)</code></span></li>
+                        <li><span class="method-link" data-method="lastIndexOf" data-interface="List"><code>lastIndexOf(Object o)</code></span></li>
+                        <li><span class="method-link" data-method="listIterator" data-interface="List"><code>listIterator()</code></span></li>
+                        <li><span class="method-link" data-method="subList" data-interface="List"><code>subList(int fromIndex, int toIndex)</code></span></li>
+                        <li>All methods from <code>Collection</code>.</li>
+                    </ul>
+                    <div class="info-section-title">Common Implementations:</div>
+                    <ul class="info-list">
+                        <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                        <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="child-item">
+                <div class="connector-line-vertical" style="height: 20px; position:relative; top: -20px;"></div>
+                <div class="interface-card" id="set">
+                    <div class="interface-name">Set&lt;E&gt;</div>
+                    <div class="interface-version">Since: JDK 1.2</div>
+                    <div class="interface-description">Extends Collection. A collection that contains no duplicate elements. Models the mathematical set abstraction.</div>
+                    <div class="info-section-title">Key Methods (Behavioral):</div>
+                    <ul class="info-list">
+                        <li><span class="method-link" data-method="add" data-interface="Set"><code>add(E e)</code></span></li>
+                        <li>All methods from <code>Collection</code>, with the contract that duplicates are not allowed.</li>
+                    </ul>
+                    <div class="info-section-title">Common Implementations:</div>
+                    <ul class="info-list">
+                        <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                        <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                    </ul>
+                </div>
+                
+                <div class="sub-children-group">
+                    <div class="connector-line-vertical" style="height: 20px;"></div>
+                    <div class="interface-card" id="sorted-set">
+                        <div class="interface-name">SortedSet&lt;E&gt;</div>
+                        <div class="interface-version">Since: JDK 1.2</div>
+                        <div class="interface-description">Extends Set. A Set that maintains its elements in ascending order, either naturally or by a specified Comparator.</div>
+                        <div class="info-section-title">Key Methods:</div>
+                        <ul class="info-list">
+                            <li><span class="method-link" data-method="comparator" data-interface="SortedSet"><code>comparator()</code></span></li>
+                            <li><span class="method-link" data-method="first" data-interface="SortedSet"><code>first()</code></span></li>
+                            <li><span class="method-link" data-method="last" data-interface="SortedSet"><code>last()</code></span></li>
+                            <li><span class="method-link" data-method="headSet" data-interface="SortedSet"><code>headSet(E toElement)</code></span></li>
+                            <li><span class="method-link" data-method="tailSet" data-interface="SortedSet"><code>tailSet(E fromElement)</code></span></li>
+                            <li><span class="method-link" data-method="subSet" data-interface="SortedSet"><code>subSet(E fromElement, E toElement)</code></span></li>
+                            <li>All methods from <code>Set</code>.</li>
+                        </ul>
+                        <div class="info-section-title">Common Implementations:</div>
+                        <ul class="info-list">
+                            <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                            <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                            <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                            <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                        </ul>
+                    </div>
+                    <div class="connector-line-vertical" style="height: 20px;"></div>
+                    <div class="interface-card" id="navigable-set">
+                        <div class="interface-name">NavigableSet&lt;E&gt;</div>
+                        <div class="interface-version">Since: JDK 1.6</div>
+                        <div class="interface-description">Extends SortedSet. Provides navigation methods for finding elements closest to a given target, and methods for descending views.</div>
+                        <div class="info-section-title">Key Methods:</div>
+                        <ul class="info-list">
+                            <li><span class="method-link" data-method="lower" data-interface="NavigableSet"><code>lower(E e)</code></span></li>
+                            <li><span class="method-link" data-method="floor" data-interface="NavigableSet"><code>floor(E e)</code></span></li>
+                            <li><span class="method-link" data-method="ceiling" data-interface="NavigableSet"><code>ceiling(E e)</code></span></li>
+                            <li><span class="method-link" data-method="higher" data-interface="NavigableSet"><code>higher(E e)</code></span></li>
+                            <li><span class="method-link" data-method="pollFirst" data-interface="NavigableSet"><code>pollFirst()</code></span></li>
+                            <li><span class="method-link" data-method="pollLast" data-interface="NavigableSet"><code>pollLast()</code></span></li>
+                            <li><span class="method-link" data-method="descendingSet" data-interface="NavigableSet"><code>descendingSet()</code></span></li>
+                            <li><span class="method-link" data-method="descendingIterator" data-interface="NavigableSet"><code>descendingIterator()</code></span></li>
+                            <li>All methods from <code>SortedSet</code>.</li>
+                        </ul>
+                        <div class="info-section-title">Common Implementations:</div>
+                        <ul class="info-list">
+                            <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                            <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                            <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                            <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="child-item">
+                <div class="connector-line-vertical" style="height: 20px; position:relative; top: -20px;"></div>
+                <div class="interface-card" id="queue">
+                    <div class="interface-name">Queue&lt;E&gt;</div>
+                    <div class="interface-version">Since: JDK 1.5</div>
+                    <div class="interface-description">Extends Collection. A collection designed for holding elements prior to processing. Typically FIFO (First-In, First-Out).</div>
+                    <div class="info-section-title">Key Methods:</div>
+                    <ul class="info-list">
+                        <li>**Adding:** <span class="method-link" data-method="add" data-interface="Queue"><code>add(E e)</code></span>, <span class="method-link" data-method="offer" data-interface="Queue"><code>offer(E e)</code></span>.</li>
+                        <li>**Removing:** <span class="method-link" data-method="remove" data-interface="Queue"><code>remove()</code></span>, <span class="method-link" data-method="poll" data-interface="Queue"><code>poll()</code></span>.</li>
+                        <li>**Examining:** <span class="method-link" data-method="element" data-interface="Queue"><code>element()</code></span>, <span class="method-link" data-method="peek" data-interface="Queue"><code>peek()</code></span>.</li>
+                        <li>All methods from <code>Collection</code>.</li>
+                    </ul>
+                    <div class="info-section-title">Common Implementations:</div>
+                    <ul class="info-list">
+                        <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                        <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                        <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                        <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                    </ul>
+                </div>
+                <div class="sub-children-group">
+                    <div class="connector-line-vertical" style="height: 20px;"></div>
+                    <div class="interface-card" id="deque">
+                                                <!-- Replace lines 535-557 with: -->
+                        
+                        <div class="interface-name">Deque&lt;E&gt;</div>
+                        <div class="interface-version">Since: JDK 1.6</div>
+                        <div class="interface-description">Extends Queue. A double-ended-queue that supports element insertion, removal and inspection at both ends. Can be used as both a queue (FIFO) and a stack (LIFO).</div>
+                        <div class="info-section-title">Key Methods (examples for both ends):</div>
+                        <ul class="info-list">
+                            <li><strong>First End:</strong>
+                                <span class="method-link" data-method="addFirst" data-interface="Deque"><code>addFirst(E e)</code></span>,
+                                <span class="method-link" data-method="removeFirst" data-interface="Deque"><code>removeFirst()</code></span>,
+                                <span class="method-link" data-method="getFirst" data-interface="Deque"><code>getFirst()</code></span>
+                            </li>
+                            <li><strong>Last End:</strong>
+                                <span class="method-link" data-method="addLast" data-interface="Deque"><code>addLast(E e)</code></span>,
+                                <span class="method-link" data-method="removeLast" data-interface="Deque"><code>removeLast()</code></span>,
+                                <span class="method-link" data-method="getLast" data-interface="Deque"><code>getLast()</code></span>
+                            </li>
+                            <li><strong>Stack Methods:</strong>
+                                <span class="method-link" data-method="push" data-interface="Deque"><code>push(E e)</code></span>,
+                                <span class="method-link" data-method="pop" data-interface="Deque"><code>pop()</code></span>
+                            </li>
+                            <li>All methods from <code>Queue</code> and <code>Collection</code></li>
+                        </ul>
+                        <div class="info-section-title">Common Implementations:</div>
+                        <ul class="info-list">
+                            <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                            <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                            <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                            <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="parent-map" style="margin-top: 40px;">
+            <div class="interface-card" id="map">
+                <div class="interface-name">Map&lt;K,V&gt;</div>
+                <div class="interface-version">Since: JDK 1.2</div>
+                <div class="interface-description">An object that maps keys to values. A map cannot contain duplicate keys; each key can map to at most one value.</div>
+                <div class="info-section-title">Key Methods:</div>
+                <ul class="info-list">
+                    <li><span class="method-link" data-method="put" data-interface="Map"><code>put(K key, V value)</code></span></li>
+                    <li><span class="method-link" data-method="get" data-interface="Map"><code>get(Object key)</code></span></li>
+                    <li><span class="method-link" data-method="remove" data-interface="Map"><code>remove(Object key)</code></span></li>
+                    <li><span class="method-link" data-method="containsKey" data-interface="Map"><code>containsKey(Object key)</code></span></li>
+                    <li><span class="method-link" data-method="containsValue" data-interface="Map"><code>containsValue(Object value)</code></span></li>
+                    <li><span class="method-link" data-method="size" data-interface="Map"><code>size()</code></span></li>
+                    <li><span class="method-link" data-method="isEmpty" data-interface="Map"><code>isEmpty()</code></span></li>
+                    <li><span class="method-link" data-method="clear" data-interface="Map"><code>clear()</code></span></li>
+                    <li><span class="method-link" data-method="keySet" data-interface="Map"><code>keySet()</code></span></li>
+                    <li><span class="method-link" data-method="values" data-interface="Map"><code>values()</code></span></li>
+                    <li><span class="method-link" data-method="entrySet" data-interface="Map"><code>entrySet()</code></span></li>
+                    <li><span class="method-link" data-method="putAll" data-interface="Map"><code>putAll(Map&lt;? extends K, ? extends V&gt; m)</code></span></li>
+                    <li><span class="method-link" data-method="getOrDefault" data-interface="Map"><code>getOrDefault(Object key, V defaultValue)</code></span> (JDK 8)</li>
+                    <li><span class="method-link" data-method="forEach" data-interface="Map"><code>forEach(BiConsumer&lt;? super K, ? super V&gt; action)</code></span> (JDK 8)</li>
+                    <li><span class="method-link" data-method="replaceAll" data-interface="Map"><code>replaceAll(BiFunction&lt;? super K, ? super V, ? extends V&gt; function)</code></span> (JDK 8)</li>
+                </ul>
+                <div class="info-section-title">Common Implementations:</div>
+                <ul class="info-list">              
+                    <li>**Note:** No direct concrete implementations of <code>Map</code> are provided by the JDK. Instead, it is implemented via its sub-interfaces.</li>                   
+                
+                
+                    <div class="modal-section-title">Example:</div>
+                    <li><code>HashMap</code>: **Hash table backed map.** Provides fastest access (average $O(1)$) for insertion, deletion, and lookup, but does not guarantee order.</li>
+                    <li><code>LinkedHashMap</code>: **Hash table and linked list backed map.** Maintains insertion order of keys while offering near constant-time performance.</li>
+                    <li>(<code>TreeMap</code> implements <code>SortedMap</code>)</li>
+                    <li><code>Hashtable</code>: **Legacy, synchronized hash table.** Similar to HashMap but thread-safe and does not allow null keys or values.</li>
+                    <li><code>EnumMap</code>: Specialized map for enum keys, very efficient.</li>
+                    <li><code>IdentityHashMap</code>: Uses reference equality (<code>==</code>) instead of object equality (<code>equals()</code>) for keys.</li>
+                    <li><code>WeakHashMap</code>: Keys are stored as weak references; entries are garbage collected when their keys are no longer strongly referenced.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="width: 100%; display: flex; justify-content: center; position: relative;">
+            <div class="connector-line-vertical" style="height: 30px; position: absolute; top: -30px;"></div>
+        </div>
+
+        <div class="children-group">
+            <div class="connector-line-horizontal" style="left: 10%; right: 10%; top: 20px;"></div> <div class="child-item">
+                <div class="connector-line-vertical" style="height: 20px; position:relative; top: -20px;"></div>
+                <div class="interface-card" id="sorted-map">
+                    <div class="interface-name">SortedMap&lt;K,V&gt;</div>
+                    <div class="interface-version">Since: JDK 1.2</div>
+                    <div class="interface-description">Extends Map. A Map that maintains its key-value mappings in ascending key order, either naturally or by a specified Comparator.</div>
+                    <div class="info-section-title">Key Methods:</div>
+                    <ul class="info-list">                    
+                        <li><span class="method-link" data-method="comparator" data-interface="SortedMap"><code>comparator()</code></span></li>
+                        <li><span class="method-link" data-method="firstKey" data-interface="SortedMap"><code>firstKey()</code></span></li>
+                        <li><span class="method-link" data-method="lastKey" data-interface="SortedMap"><code>lastKey()</code></span></li>
+                        <li><span class="method-link" data-method="headMap" data-interface="SortedMap"><code>headMap(K toKey)</code></span></li>
+                        <li><span class="method-link" data-method="tailMap" data-interface="SortedMap"><code>tailMap(K fromKey)</code></span></li>
+                        <li><span class="method-link" data-method="subMap" data-interface="SortedMap"><code>subMap(K fromKey, K toKey)</code></span></li>
+                        <li>All methods from <code>Map</code>.</li>
+                    </ul>
+                    <div class="info-section-title">Common Implementations:</div>
+                    <ul class="info-list">
+                        <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                        <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                        <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                        <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                    </ul>
+                </div>
+                <div class="sub-children-group">
+                    <div class="connector-line-vertical" style="height: 20px;"></div>
+                    <div class="interface-card" id="navigable-map">
+                        <div class="interface-name">NavigableMap&lt;K,V&gt;</div>
+                        <div class="interface-version">Since: JDK 1.6</div>
+                        <div class="interface-description">Extends SortedMap. Provides navigation methods for finding entries based on closest-match searches for keys, and methods for descending views.</div>
+                        <div class="info-section-title">Key Methods:</div>
+                        <ul class="info-list">
+                            <li><span class="method-link" data-method="lowerEntry" data-interface="NavigableMap"><code>lowerEntry(K key)</code></span></li>
+                            <li><span class="method-link" data-method="lowerKey" data-interface="NavigableMap"><code>lowerKey(K key)</code></span></li>
+                            <li><span class="method-link" data-method="floorEntry" data-interface="NavigableMap"><code>floorEntry(K key)</code></span></li>
+                            <li><span class="method-link" data-method="floorKey" data-interface="NavigableMap"><code>floorKey(K key)</code></span></li>
+                            <li><span class="method-link" data-method="ceilingEntry" data-interface="NavigableMap"><code>ceilingEntry(K key)</code></span></li>
+                            <li><span class="method-link" data-method="ceilingKey" data-interface="NavigableMap"><code>ceilingKey(K key)</code></span></li>
+                            <li><span class="method-link" data-method="higherEntry" data-interface="NavigableMap"><code>higherEntry(K key)</code></span></li>
+                            <li><span class="method-link" data-method="higherKey" data-interface="NavigableMap"><code>higherKey(K key)</code></span></li>
+                            <li><span class="method-link" data-method="firstEntry" data-interface="NavigableMap"><code>firstEntry()</code></span></li>
+                            <li><span class="method-link" data-method="lastEntry" data-interface="NavigableMap"><code>lastEntry()</code></span></li>
+                            <li><span class="method-link" data-method="pollFirstEntry" data-interface="NavigableMap"><code>pollFirstEntry()</code></span></li>
+                            <li><span class="method-link" data-method="pollLastEntry" data-interface="NavigableMap"><code>pollLastEntry()</code></span></li>
+                            <li><span class="method-link" data-method="descendingMap" data-interface="NavigableMap"><code>descendingMap()</code></span></li>
+                            <li><span class="method-link" data-method="navigableKeySet" data-interface="NavigableMap"><code>navigableKeySet()</code></span></li>
+                            <li><span class="method-link" data-method="descendingKeySet" data-interface="NavigableMap"><code>descendingKeySet()</code></span></li>
+                            <li>All methods from <code>SortedMap</code>.</li>
+                        </ul>
+                        <div class="info-section-title">Common Implementations:</div>
+                        <ul class="info-list">
+                            <li><span class="class-link" data-class="ArrayList">ArrayList</span>: Array-backed list implementation</li>
+                            <li><span class="class-link" data-class="LinkedList">LinkedList</span>: Doubly-linked list implementation</li>
+                            <li><span class="class-link" data-class="HashSet">HashSet</span>: Hash table based set implementation</li>
+                            <li><span class="class-link" data-class="TreeSet">TreeSet</span>: Red-Black tree based set implementation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="methodModal" class="modal">
+        <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h3 class="modal-title" id="modalMethodName"></h3>
+    <div class="version-badge" id="modalMethodVersion"></div>
+    <p><span class="modal-code" id="modalMethodSignature"></span></p>
+
+    <div class="modal-section-title">Description:</div>
+    <p class="modal-description" id="modalMethodDescription"></p>
+
+    <div class="modal-section-title">Parameters:</div>
+    <ul class="modal-params" id="modalMethodParams"></ul>
+
+    <div class="modal-section-title">Returns:</div>
+    <p class="modal-returns" id="modalMethodReturns"></p>
+
+    <div class="modal-section-title">Throws:</div>
+    <ul class="modal-throws" id="modalMethodThrows"></ul>
+</div>
+    </div>
+
+    <div id="classModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" id="closeClassModal">&times;</span>
+        <h3 class="modal-title" id="className"></h3>
+        <div class="version-badge" id="classVersion"></div>
+        <p class="modal-section-title">Package:</p>
+        <p class="modal-code" id="classPackage"></p>
+        
+        <p class="modal-section-title">Implements:</p>
+        <p id="classImplements"></p>
+        
+        <p class="modal-section-title">Description:</p>
+        <p class="modal-description" id="classDescription"></p>
+        
+        <p class="modal-section-title">Characteristics:</p>
+        <ul class="characteristics-list" id="classCharacteristics"></ul>
+        
+        <p class="modal-section-title">Common Usage:</p>
+        <p class="modal-description" id="classUsage"></p>
+    </div>
+</div>
+
+    <script>
+        const debugMode = false; // Set to true for debugging
+        if (debugMode) {
+            console.log("Script started running."); // Added for initial script load check
+        }
+
+        // Data for method details
+        const methodDetails = {
+            "Collection": {
+            "add": {
+                signature: "boolean add(E e)",
+                description: "Ensures that this collection contains the specified element. Returns true if this collection changed as a result of the call. Returns false if this collection already contains the element and does not permit duplicates, or if the collection is capacity-restricted and could not add the element.",
+                params: [{ name: "e", type: "E", desc: "element whose presence in this collection is to be ensured" }],
+                returns: "true if this collection changed as a result of the call",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException", "IllegalStateException"],
+                version: "JDK 1.2"
+            },
+            "remove": {
+                signature: "boolean remove(Object o)",
+                description: "Removes a single instance of the specified element from this collection, if it is present. Returns true if this collection contained the specified element (or equivalently, if this collection changed as a result of the call).",
+                params: [{ name: "o", type: "Object", desc: "element to be removed from this collection, if present" }],
+                returns: "true if an element was removed as a result of this call",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "contains": {
+                signature: "boolean contains(Object o)",
+                description: "Returns true if this collection contains the specified element. More formally, returns true if and only if this collection contains at least one element e such that (o==null ? e==null : o.equals(e)).",
+                params: [{ name: "o", type: "Object", desc: "element whose presence in this collection is to be tested" }],
+                returns: "true if this collection contains the specified element",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "size": {
+                signature: "int size()",
+                description: "Returns the number of elements in this collection. If this collection contains more than Integer.MAX_VALUE elements, returns Integer.MAX_VALUE.",
+                params: [],
+                returns: "the number of elements in this collection",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "isEmpty": {
+                signature: "boolean isEmpty()",
+                description: "Returns true if this collection contains no elements.",
+                params: [],
+                returns: "true if this collection contains no elements",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "iterator": {
+                signature: "Iterator<E> iterator()",
+                description: "Returns an iterator over the elements in this collection. There are no guarantees concerning the order in which the elements are returned (unless this collection is an instance of some class that provides a guarantee).",
+                params: [],
+                returns: "an Iterator over the elements in this collection",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "toArray": {
+                signature: "Object[] toArray()",
+                description: "Returns an array containing all of the elements in this collection. If this collection makes any guarantees as to what order its elements are returned by its iterator, this method must return the elements in the same order.",
+                params: [],
+                returns: "an array containing all of the elements in this collection",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "clear": {
+                signature: "void clear()",
+                description: "Removes all of the elements from this collection. The collection will be empty after this method returns.",
+                params: [],
+                returns: "void",
+                throws: ["UnsupportedOperationException"],
+                version: "JDK 1.2"
+            },
+            "addAll": {
+                signature: "boolean addAll(Collection<? extends E> c)",
+                description: "Adds all of the elements in the specified collection to this collection. The behavior of this operation is unspecified if the specified collection is this collection, or if the specified collection is modified while the operation is in progress.",
+                params: [{ name: "c", type: "Collection<? extends E>", desc: "collection containing elements to be added to this collection" }],
+                returns: "true if this collection changed as a result of the call",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException", "IllegalStateException"],
+                version: "JDK 1.2"
+            },
+            "removeAll": {
+                signature: "boolean removeAll(Collection<?> c)",
+                description: "Removes all of this collection's elements that are also contained in the specified collection. After this call returns, this collection will contain no elements in common with the specified collection.",
+                params: [{ name: "c", type: "Collection<?>", desc: "collection containing elements to be removed from this collection" }],
+                returns: "true if this collection changed as a result of the call",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "retainAll": {
+                signature: "boolean retainAll(Collection<?> c)",
+                description: "Retains only the elements in this collection that are contained in the specified collection. In other words, removes from this collection all of its elements that are not contained in the specified collection.",
+                params: [{ name: "c", type: "Collection<?>", desc: "collection containing elements to be retained in this collection" }],
+                returns: "true if this collection changed as a result of the call",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "containsAll": {
+                signature: "boolean containsAll(Collection<?> c)",
+                description: "Returns true if this collection contains all of the elements in the specified collection. This method also allows checking if one collection is a 'superset' of another.",
+                params: [{ name: "c", type: "Collection<?>", desc: "collection to be checked for containment in this collection" }],
+                returns: "true if this collection contains all of the elements in the specified collection",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            }
+            },
+            "List": {
+            "get": {
+                signature: "E get(int index)",
+                description: "Returns the element at the specified position in this list.",
+                params: [{ name: "index", type: "int", desc: "index of the element to return" }],
+                returns: "the element at the specified position in this list",
+                throws: ["IndexOutOfBoundsException"],
+                version: "JDK 1.2"
+            },
+            "set": {
+                signature: "E set(int index, E element)",
+                description: "Replaces the element at the specified position in this list with the specified element.",
+                params: [
+                { name: "index", type: "int", desc: "index of the element to replace" },
+                { name: "element", type: "E", desc: "element to be stored at the specified position" }
+                ],
+                returns: "the element previously at the specified position",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException", "IndexOutOfBoundsException"],
+                version: "JDK 1.2"
+            },
+            "add_index": {
+                signature: "void add(int index, E element)",
+                description: "Inserts the specified element at the specified position in this list. Shifts the element currently at that position (if any) and any subsequent elements to the right (adds one to their indices).",
+                params: [
+                { name: "index", type: "int", desc: "index at which the specified element is to be inserted" },
+                { name: "element", type: "E", desc: "element to be inserted" }
+                ],
+                returns: "void",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException", "IndexOutOfBoundsException"],
+                version: "JDK 1.2"
+            },
+            "remove_index": {
+                signature: "E remove(int index)",
+                description: "Removes the element at the specified position in this list. Shifts any subsequent elements to the left (subtracts one from their indices). Returns the element that was removed from the list.",
+                params: [{ name: "index", type: "int", desc: "the index of the element to be removed" }],
+                returns: "the element previously at the specified position",
+                throws: ["UnsupportedOperationException", "IndexOutOfBoundsException"],
+                version: "JDK 1.2"
+            },
+            "indexOf": {
+                signature: "int indexOf(Object o)",
+                description: "Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.",
+                params: [{ name: "o", type: "Object", desc: "element to search for" }],
+                returns: "the index of the first occurrence of the specified element in this list, or -1 if not found",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "lastIndexOf": {
+                signature: "int lastIndexOf(Object o)",
+                description: "Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.",
+                params: [{ name: "o", type: "Object", desc: "element to search for" }],
+                returns: "the index of the last occurrence of the specified element in this list, or -1 if not found",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "listIterator": {
+                signature: "ListIterator<E> listIterator()",
+                description: "Returns a list iterator over the elements in this list (in proper sequence).",
+                params: [],
+                returns: "a list iterator over the elements in this list",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "subList": {
+                signature: "List<E> subList(int fromIndex, int toIndex)",
+                description: "Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive. (If fromIndex and toIndex are equal, the returned list is empty.)",
+                params: [
+                { name: "fromIndex", type: "int", desc: "low endpoint (inclusive) of the subList" },
+                { name: "toIndex", type: "int", desc: "high endpoint (exclusive) of the subList" }
+                ],
+                returns: "a view of the specified range within this list",
+                throws: ["IndexOutOfBoundsException"],
+                version: "JDK 1.2"
+            }
+            },
+            "Set": {
+            "add": {
+                signature: "boolean add(E e)",
+                description: "Adds the specified element to this set if it is not already present. If this set already contains the element, the call leaves the set unchanged and returns false.",
+                params: [{ name: "e", type: "E", desc: "element to be added to this set" }],
+                returns: "true if this set did not already contain the specified element",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            }
+            },
+            "SortedSet": {
+            "comparator": {
+                signature: "Comparator<? super E> comparator()",
+                description: "Returns the comparator used to order the elements in this set, or null if this set uses the natural ordering of its elements.",
+                params: [],
+                returns: "the comparator used to order the elements in this set, or null if natural ordering",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "first": {
+                signature: "E first()",
+                description: "Returns the first (lowest) element currently in this set.",
+                params: [],
+                returns: "the first (lowest) element currently in this set",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.2"
+            },
+            "last": {
+                signature: "E last()",
+                description: "Returns the last (highest) element currently in this set.",
+                params: [],
+                returns: "the last (highest) element currently in this set",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.2"
+            },
+            "headSet": {
+                signature: "SortedSet<E> headSet(E toElement)",
+                description: "Returns a view of the portion of this set whose elements are strictly less than toElement.",
+                params: [{ name: "toElement", type: "E", desc: "high endpoint (exclusive) of the headset" }],
+                returns: "a view of the specified initial portion of this set",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            },
+            "tailSet": {
+                signature: "SortedSet<E> tailSet(E fromElement)",
+                description: "Returns a view of the portion of this set whose elements are greater than or equal to fromElement.",
+                params: [{ name: "fromElement", type: "E", desc: "low endpoint (inclusive) of the tailSet" }],
+                returns: "a view of the specified final portion of this set",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            },
+            "subSet": {
+                signature: "SortedSet<E> subSet(E fromElement, E toElement)",
+                description: "Returns a view of the portion of this set whose elements range from fromElement, inclusive, to toElement, exclusive.",
+                params: [
+                { name: "fromElement", type: "E", desc: "low endpoint (inclusive) of the subSet" },
+                { name: "toElement", type: "E", desc: "high endpoint (exclusive) of the subSet" }
+                ],
+                returns: "a view of the specified range within this set",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            }
+            },
+            "NavigableSet": {
+             "lower": {
+            signature: "E lower(E e)",
+            description: "Returns the greatest element in this set strictly less than the given element, or null if there is no such element.",
+            params: [{ name: "e", type: "E", desc: "element to match" }],
+            returns: "the greatest element less than e, or null if there is no such element",
+            throws: ["ClassCastException", "NullPointerException"],
+            version: "JDK 1.6"
+            },
+            "floor": {
+                signature: "E floor(E e)",
+                description: "Returns the greatest element in this set less than or equal to the given element, or null if there is no such element.",
+                params: [{ name: "e", type: "E", desc: "the element to match" }],
+                returns: "the greatest element less than or equal to e, or null if there is no such element",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "ceiling": {
+                signature: "E ceiling(E e)",
+                description: "Returns the least element in this set greater than or equal to the given element, or null if there is no such element.",
+                params: [{ name: "e", type: "E", desc: "the element to match" }],
+                returns: "the least element greater than or equal to e, or null if there is no such element",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "higher": {
+                signature: "E higher(E e)",
+                description: "Returns the least element in this set strictly greater than the given element, or null if there is no such element.",
+                params: [{ name: "e", type: "E", desc: "the element to match" }],
+                returns: "the least element strictly greater than e, or null if there is no such element",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "pollFirst": {
+                signature: "E pollFirst()",
+                description: "Retrieves and removes the first (lowest) element, or returns null if this set is empty.",
+                params: [],
+                returns: "the first (lowest) element, or null if this set is empty",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "pollLast": {
+                signature: "E pollLast()",
+                description: "Retrieves and removes the last (highest) element, or returns null if this set is empty.",
+                params: [],
+                returns: "the last (highest) element, or null if this set is empty",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "descendingSet": {
+                signature: "NavigableSet<E> descendingSet()",
+                description: "Returns a reverse order view of the elements contained in this set. The descending set is backed by this set, so changes to the set are reflected in the descending set, and vice-versa.",
+                params: [],
+                returns: "a reverse order view of this set",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "descendingIterator": {
+                signature: "Iterator<E> descendingIterator()",
+                description: "Returns an iterator over the elements in this set, in descending order.",
+                params: [],
+                returns: "an iterator over the elements in this set in descending order",
+                throws: [],
+                version: "JDK 1.6"
+            }
+            },
+            "Queue": {
+            "add": {
+                signature: "boolean add(E e)",
+                description: "Inserts the specified element into this queue if it is possible to do so immediately without violating capacity restrictions, returning true upon success and throwing an IllegalStateException if no space is currently available. This method is equivalent to offer except that it throws an exception instead of returning false if the element cannot be inserted.",
+                params: [{ name: "e", type: "E", desc: "the element to add" }],
+                returns: "true if the element was added to this queue, else false",
+                throws: ["IllegalStateException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.5"
+            },
+            "offer": {
+                signature: "boolean offer(E e)",
+                description: "Inserts the specified element into this queue if it is possible to do so immediately without violating capacity restrictions. Returns true upon success and false if no space is currently available. This method is generally preferred over add when using capacity-restricted queues.",
+                params: [{ name: "e", type: "E", desc: "the element to add" }],
+                returns: "true if the element was added to this queue, else false",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.5"
+            },
+            "remove": {
+                signature: "E remove()",
+                description: "Retrieves and removes the head of this queue. This method differs from poll only in that it throws an exception if this queue is empty.",
+                params: [],
+                returns: "the head of this queue",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.5"
+            },
+            "poll": {
+                signature: "E poll()",
+                description: "Retrieves and removes the head of this queue, or returns null if this queue is empty.",
+                params: [],
+                returns: "the head of this queue, or null if this queue is empty",
+                throws: [],
+                version: "JDK 1.5"
+            },
+            "element": {
+                signature: "E element()",
+                description: "Retrieves, but does not remove, the head of this queue. This method differs from peek only in that it throws an exception if this queue is empty.",
+                params: [],
+                returns: "the head of this queue",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.5"
+            },
+            "peek": {
+                signature: "E peek()",
+                description: "Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.",
+                params: [],
+                returns: "the head of this queue, or null if this queue is empty",
+                throws: [],
+                version: "JDK 1.5"
+            }
+            },
+            "Deque": {
+            "addFirst": {
+                signature: "void addFirst(E e)",
+                description: "Inserts the specified element at the front of this deque. This method is equivalent to offerFirst except that it throws an IllegalStateException if this deque is capacity restricted and cannot add the element.",
+                params: [{ name: "e", type: "E", desc: "the element to add" }],
+                returns: "void",
+                throws: ["IllegalStateException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.6"
+            },
+            "removeFirst": {
+                signature: "E removeFirst()",
+                description: "Retrieves and removes the first element of this deque. This method differs from pollFirst only in that it throws an exception if this deque is empty.",
+                params: [],
+                returns: "the head of this deque",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.6"
+            },
+            "getFirst": {
+                signature: "E getFirst()",
+                description: "Retrieves, but does not remove, the first element of this deque. This method differs from peekFirst only in that it throws an exception if this deque is empty.",
+                params: [],
+                returns: "the head of this deque",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.6"
+            },
+            "addLast": {
+                signature: "void addLast(E e)",
+                description: "Inserts the specified element at the end of this deque. This method is equivalent to offerLast except that it throws an IllegalStateException if this deque is capacity restricted and cannot add the element.",
+                params: [{ name: "e", type: "E", desc: "the element to add" }],
+                returns: "void",
+                throws: ["IllegalStateException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.6"
+            },
+            "removeLast": {
+                signature: "E removeLast()",
+                description: "Retrieves and removes the last element of this deque. This method differs from pollLast only in that it throws an exception if this deque is empty.",
+                params: [],
+                returns: "the tail of this deque",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.6"
+            },
+            "getLast": {
+                signature: "E getLast()",
+                description: "Retrieves, but does not remove, the last element of this deque. This method differs from peekLast only in that it throws an exception if this deque is empty.",
+                params: [],
+                returns: "the tail of this deque",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.6"
+            },
+            "push": {
+                signature: "void push(E e)",
+                description: "Pushes an element onto the stack represented by this deque (in other words, at the front of this deque). This method is equivalent to addFirst.",
+                params: [{ name: "e", type: "E", desc: "the element to push" }],
+                returns: "void",
+                throws: ["IllegalStateException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.6"
+            },
+            "pop": {
+                signature: "E pop()",
+                description: "Pops an element from the stack represented by this deque (in other words, removes and returns the first element of this deque). This method is equivalent to removeFirst().",
+                params: [],
+                returns: "the element at the front of this deque (the top of the stack)",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.6"
+            }
+            },
+            "Map": {
+            "put": {
+                signature: "V put(K key, V value)",
+                description: "Associates the specified value with the specified key in this map. If the map previously contained a mapping for the key, the old value is replaced.",
+                params: [
+                { name: "key", type: "K", desc: "key with which the specified value is to be associated" },
+                { name: "value", type: "V", desc: "value to be associated with the specified key" }
+                ],
+                returns: "the previous value associated with key, or null if there was no mapping for key. (A null return can also indicate that the map previously associated null with the key, if the implementation supports null values.)",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            },
+            "get": {
+                signature: "V get(Object key)",
+                description: "Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.",
+                params: [{ name: "key", type: "Object", desc: "the key whose associated value is to be returned" }],
+                returns: "the value to which the specified key is mapped, or null",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "remove": {
+                signature: "V remove(Object key)",
+                description: "Removes the mapping for a key from this map if it is present. Returns the value to which this map previously associated the key, or null if the map contained no mapping for the key.",
+                params: [{ name: "key", type: "Object", desc: "key whose mapping is to be removed from the map" }],
+                returns: "the previous value associated with key, or null if there was no mapping for key.",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "containsKey": {
+                signature: "boolean containsKey(Object key)",
+                description: "Returns true if this map contains a mapping for the specified key.",
+                params: [{ name: "key", type: "Object", desc: "The key whose presence in this map is to be tested" }],
+                returns: "true if this map contains a mapping for the specified key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "containsValue": {
+                signature: "boolean containsValue(Object value)",
+                description: "Returns true if this map maps one or more keys to the specified value.",
+                params: [{ name: "value", type: "Object", desc: "value whose presence in this map is to be tested" }],
+                returns: "true if this map maps one or more keys to the specified value",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.2"
+            },
+            "size": {
+                signature: "int size()",
+                description: "Returns the number of key-value mappings in this map. If the map contains more than Integer.MAX_VALUE elements, returns Integer.MAX_VALUE.",
+                params: [],
+                returns: "the number of key-value mappings in this map",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "isEmpty": {
+                signature: "boolean isEmpty()",
+                description: "Returns true if this map contains no key-value mappings.",
+                params: [],
+                returns: "true if this map contains no key-value mappings",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "clear": {
+                signature: "void clear()",
+                description: "Removes all of the mappings from this map. The map will be empty after this call returns.",
+                params: [],
+                returns: "void",
+                throws: ["UnsupportedOperationException"],
+                version: "JDK 1.2"
+            },
+            "keySet": {
+                signature: "Set<K> keySet()",
+                description: "Returns a Set view of the keys contained in this map. The set is backed by the map, so changes to the map are reflected in the set, and vice-versa. If the map is modified while an iteration over the set is in progress (except through the iterator's own remove operation), the results of the iteration are undefined.",
+                params: [],
+                returns: "a set view of the keys contained in this map",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "values": {
+                signature: "Collection<V> values()",
+                description: "Returns a Collection view of the values contained in this map. The collection is backed by the map, so changes to the map are reflected in the collection, and vice-versa. If the map is modified while an iteration over the collection is in progress (except through the iterator's own remove operation), the results of the iteration are undefined.",
+                params: [],
+                returns: "a collection view of the values contained in this map",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "entrySet": {
+                signature: "Set<Map.Entry<K,V>> entrySet()",
+                description: "Returns a Set view of the mappings contained in this map. The set is backed by the map, so changes to the map are reflected in the set, and vice-versa. If the map is modified while an iteration over the set is in progress (except through the iterator's own remove operation, or through the setValue operation on a map entry returned by the iterator), the results of the iteration are undefined.",
+                params: [],
+                returns: "a set view of the mappings contained in this map",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "putAll": {
+                signature: "void putAll(Map<? extends K, ? extends V> m)",
+                description: "Copies all of the mappings from the specified map to this map. The effect of this call is equivalent to that of calling put(k, v) on this map once for each mapping from key k to value v in the specified map.",
+                params: [{ name: "m", type: "Map<? extends K, ? extends V>", desc: "mappings to be stored in this map" }],
+                returns: "void",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            },
+            "getOrDefault": {
+                signature: "V getOrDefault(Object key, V defaultValue)",
+                description: "Returns the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key.",
+                params: [
+                { name: "key", type: "Object", desc: "the key whose associated value is to be returned" },
+                { name: "defaultValue", type: "V", desc: "the default mapping of the key" }
+                ],
+                returns: "the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 8"
+            },
+            "forEach": {
+                signature: "void forEach(BiConsumer<? super K, ? super V> action)",
+                description: "Performs the given action for each entry in this map until all entries have been processed or the action throws an exception. Unless otherwise specified by the implementing class, actions are performed in the order of entrySet() iteration (if an iteration order is specified).",
+                params: [{ name: "action", type: "BiConsumer<? super K, ? super V>", desc: "the action to be performed for each entry" }],
+                returns: "void",
+                throws: ["NullPointerException"],
+                version: "JDK 8"
+            },
+            "replaceAll": {
+                signature: "void replaceAll(BiFunction<? super K, ? super V, ? extends V> function)",
+                description: "Replaces each entry's value with the result of invoking the given function on the corresponding key and value until all entries have been processed or the function throws an exception. Exceptions thrown by the function are relayed to the caller.",
+                params: [{ name: "function", type: "BiFunction<? super K, ? super V, ? extends V>", desc: "the function to apply to each entry" }],
+                returns: "void",
+                throws: ["UnsupportedOperationException", "ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 8"
+            }
+            },
+            "SortedMap": {
+            "comparator": {
+                signature: "Comparator<? super K> comparator()",
+                description: "Returns the comparator used to order the keys in this map, or null if this map uses the natural ordering of its keys.",
+                params: [],
+                returns: "the comparator used to order the keys in this map, or null if natural ordering",
+                throws: [],
+                version: "JDK 1.2"
+            },
+            "firstKey": {
+                signature: "K firstKey()",
+                description: "Returns the first (lowest) key currently in this map.",
+                params: [],
+                returns: "the first (lowest) key currently in this map",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.2"
+            },
+            "lastKey": {
+                signature: "K lastKey()",
+                description: "Returns the last (highest) key currently in this map.",
+                params: [],
+                returns: "the last (highest) key currently in this map",
+                throws: ["NoSuchElementException"],
+                version: "JDK 1.2"
+            },
+            "headMap": {
+                signature: "SortedMap<K,V> headMap(K toKey)",
+                description: "Returns a view of the portion of this map whose keys are strictly less than toKey.",
+                params: [{ name: "toKey", type: "K", desc: "high endpoint (exclusive) of the headMap" }],
+                returns: "a view of the specified initial portion of this map",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            },
+            "tailMap": {
+                signature: "SortedMap<K,V> tailMap(K fromKey)",
+                description: "Returns a view of the portion of this map whose keys are greater than or equal to fromKey.",
+                params: [{ name: "fromKey", type: "K", desc: "low endpoint (inclusive) of the tailMap" }],
+                returns: "a view of the specified final portion of this map",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            },
+            "subMap": {
+                signature: "SortedMap<K,V> subMap(K fromKey, K toKey)",
+                description: "Returns a view of the portion of this map whose keys range from fromKey, inclusive, to toKey, exclusive.",
+                params: [
+                { name: "fromKey", type: "K", desc: "low endpoint (inclusive) of the subMap" },
+                                              { name: "toKey", type: "K", desc: "high endpoint (exclusive) of the subMap" }
+                ],
+                returns: "a view of the specified range within this map",
+                throws: ["ClassCastException", "NullPointerException", "IllegalArgumentException"],
+                version: "JDK 1.2"
+            }
+            },
+            "NavigableMap": {
+            "lowerEntry": {
+                signature: "Map.Entry<K,V> lowerEntry(K key)",
+                description: "Returns a key-value mapping associated with the greatest key strictly less than the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "an entry with the greatest key less than key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "lowerKey": {
+                signature: "K lowerKey(K key)",
+                description: "Returns the greatest key strictly less than the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "the greatest key less than key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "floorEntry": {
+                signature: "Map.Entry<K,V> floorEntry(K key)",
+                description: "Returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "an entry with the greatest key less than or equal to key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "floorKey": {
+                signature: "K floorKey(K key)",
+                description: "Returns the greatest key less than or equal to the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "the greatest key less than or equal to key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "ceilingEntry": {
+                signature: "Map.Entry<K,V> ceilingEntry(K key)",
+                description: "Returns a key-value mapping associated with the least key greater than or equal to the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "an entry with the least key greater than or equal to key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "ceilingKey": {
+                signature: "K ceilingKey(K key)",
+                description: "Returns the least key greater than or equal to the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "the least key greater than or equal to key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "higherEntry": {
+                signature: "Map.Entry<K,V> higherEntry(K key)",
+                description: "Returns a key-value mapping associated with the least key strictly greater than the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "an entry with the least key greater than key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "higherKey": {
+                signature: "K higherKey(K key)",
+                description: "Returns the least key strictly greater than the given key, or null if there is no such key.",
+                params: [{ name: "key", type: "K", desc: "the key to match" }],
+                returns: "the least key strictly greater than key, or null if there is no such key",
+                throws: ["ClassCastException", "NullPointerException"],
+                version: "JDK 1.6"
+            },
+            "firstEntry": {
+                signature: "Map.Entry<K,V> firstEntry()",
+                description: "Returns a key-value mapping associated with the least key in this map, or null if the map is empty.",
+                params: [],
+                returns: "an entry with the least key, or null if this map is empty",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "lastEntry": {
+                signature: "Map.Entry<K,V> lastEntry()",
+                description: "Returns a key-value mapping associated with the greatest key in this map, or null if the map is empty.",
+                params: [],
+                returns: "an entry with the greatest key, or null if this map is empty",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "pollFirstEntry": {
+                signature: "Map.Entry<K,V> pollFirstEntry()",
+                description: "Removes and returns a key-value mapping associated with the least key in this map, or null if the map is empty.",
+                params: [],
+                returns: "the removed first entry, or null if this map is empty",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "pollLastEntry": {
+                signature: "Map.Entry<K,V> pollLastEntry()",
+                description: "Removes and returns a key-value mapping associated with the greatest key in this map, or null if the map is empty.",
+                params: [],
+                returns: "the removed last entry, or null if this map is empty",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "descendingMap": {
+                signature: "NavigableMap<K,V> descendingMap()",
+                description: "Returns a reverse order view of the mappings contained in this map. The descending map is backed by this map, so changes to the map are reflected in the descending map, and vice-versa.",
+                params: [],
+                returns: "a reverse order view of this map",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "navigableKeySet": {
+                signature: "NavigableSet<K> navigableKeySet()",
+                description: "Returns a NavigableSet view of the keys contained in this map. The set's iterator returns the keys in ascending order. The set is backed by the map, so changes to the map are reflected in the set, and vice-versa.",
+                params: [],
+                returns: "a navigable set view of the keys in this map",
+                throws: [],
+                version: "JDK 1.6"
+            },
+            "descendingKeySet": {
+                signature: "NavigableSet<K> descendingKeySet()",
+                description: "Returns a reverse order NavigableSet view of the keys contained in this map. The set is backed by the map, so changes to the map are reflected in the set, and vice-versa.",
+                params: [],
+                returns: "a reverse order navigable set view of the keys in this map",
+                throws: [],
+                version: "JDK 1.6"
+            }
+            }
+            // Add more interfaces and their methods here
+        };
+
+        const classDetails = {
+    "ArrayList": {
+        version: "JDK 1.2",
+        package: "java.util",
+        implements: ["List<E>", "RandomAccess", "Cloneable", "Serializable"],
+        description: "Resizable-array implementation of the List interface. Implements all optional list operations, and permits all elements, including null. This class provides methods to manipulate the size of the array that is used internally to store the list.",
+        characteristics: [
+            "Random access: O(1)",
+            "Insert/Remove: O(n)",
+            "Memory: Low overhead",
+            "Iterator: Fail-fast",
+            "Null elements: Allowed",
+            "Duplicates: Allowed",
+            "Thread-safe: No"
+        ],
+        commonUsage: "Best choice for random access operations and storing data where size changes infrequently."
+    },
+    "LinkedList": {
+        version: "JDK 1.2",
+        package: "java.util",
+        implements: ["List<E>", "Deque<E>", "Cloneable", "Serializable"],
+        description: "Doubly-linked list implementation of the List and Deque interfaces. Implements all optional list operations, and permits all elements, including null.",
+        characteristics: [
+            "Random access: O(n)",
+            "Insert/Remove: O(1) with iterator",
+            "Memory: Higher overhead (nodes)",
+            "Iterator: Fail-fast",
+            "Null elements: Allowed",
+            "Duplicates: Allowed",
+            "Thread-safe: No"
+        ],
+        commonUsage: "Best choice for frequent insertions and deletions, especially at ends."
+    },
+    "HashSet": {
+        version: "JDK 1.2",
+        package: "java.util",
+        implements: ["Set<E>", "Cloneable", "Serializable"],
+        description: "Hash table based implementation of the Set interface. Makes no guarantees as to the iteration order of the set.",
+        characteristics: [
+            "Add/Remove/Contains: O(1) average",
+            "Memory: Low-to-medium overhead",
+            "Iterator: Fail-fast",
+            "Null elements: Allowed (one)",
+            "Duplicates: Not allowed",
+            "Thread-safe: No",
+            "Order: No guaranteed order"
+        ],
+        commonUsage: "Best choice for storing unique elements with fast access/lookup requirements."
+    },
+    "TreeSet": {
+        version: "JDK 1.2",
+        package: "java.util",
+        implements: ["NavigableSet<E>", "Cloneable", "Serializable"],
+        description: "Red-Black tree based NavigableSet implementation. Orders elements using their natural order or a Comparator provided at set creation time.",
+        characteristics: [
+            "Add/Remove/Contains: O(log n)",
+            "Memory: Higher overhead",
+            "Iterator: Fail-fast",
+            "Null elements: Not allowed (natural ordering)",
+            "Duplicates: Not allowed",
+            "Thread-safe: No",
+            "Order: Sorted"
+        ],
+        commonUsage: "Best choice when you need a sorted set with guaranteed log(n) time cost for operations."
+    }
+};
+
+        // Get the modal elements
+        const modal = document.getElementById('methodModal');
+        const closeButton = document.querySelector('.close-button');
+        const modalMethodName = document.getElementById('modalMethodName');
+        const modalMethodSignature = document.getElementById('modalMethodSignature');
+        const modalMethodDescription = document.getElementById('modalMethodDescription');
+        const modalMethodParams = document.getElementById('modalMethodParams');
+        const modalMethodReturns = document.getElementById('modalMethodReturns');
+        const modalMethodThrows = document.getElementById('modalMethodThrows');
+            const debug = false; // Set to true to enable debug logs
+            if (debug) {
+                console.log("DOM Content Loaded. Script is running.");
+            }
+        // Ensure DOM is fully loaded before attaching listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Attach click listeners to all method links
+            document.querySelectorAll('.method-link').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const interfaceName = this.getAttribute('data-interface');
+                    const methodName = this.getAttribute('data-method');
+                    if (debugMode) {
+                        console.log('Clicked:', interfaceName, methodName);
+                    }
+                    openModal(interfaceName, methodName);
+                });
+            });
+        }); // End of DOMContentLoaded
+
+        // Function to open the modal
+        function openModal(interfaceName, methodNameKey) {
+            const methodInfo = methodDetails[interfaceName]?.[methodNameKey];
+            
+            if (methodInfo) {
+                // Set method name
+                modalMethodName.textContent = `${interfaceName}.${methodNameKey.replace(/_\w+/, '')}`;
+                
+                // Set version badge
+                const modalMethodVersion = document.getElementById('modalMethodVersion');
+                if (methodInfo.version) {
+                    modalMethodVersion.textContent = `Since: ${methodInfo.version}`;
+                    modalMethodVersion.style.display = 'inline-block';
+                } else {
+                    modalMethodVersion.style.display = 'none';
+                }
+                
+                // Set other modal content
+                modalMethodSignature.textContent = methodInfo.signature;
+                modalMethodDescription.textContent = methodInfo.description;
+
+                // Clear and set parameters
+                modalMethodParams.innerHTML = '';
+                if (methodInfo.params && methodInfo.params.length > 0) {
+                    methodInfo.params.forEach(p => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<span class="modal-code">${p.type} ${p.name}</span>: ${p.desc}`;
+                        modalMethodParams.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = "None";
+                    modalMethodParams.appendChild(li);
+                }
+
+                // Set returns
+                modalMethodReturns.textContent = methodInfo.returns;
+
+                // Clear and set throws
+                modalMethodThrows.innerHTML = '';
+                if (methodInfo.throws && methodInfo.throws.length > 0) {
+                    methodInfo.throws.forEach(t => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<span class="modal-code">${t}</span>`;
+                        modalMethodThrows.appendChild(li);
+                    });
+                } else {
+                    const li = document.createElement('li');
+                    li.textContent = "None";
+                    modalMethodThrows.appendChild(li);
+                }
+
+                modal.style.display = 'flex';
+            } else {
+                console.warn(`Method details not found for ${interfaceName}.${methodNameKey}`);
+            }
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Event listeners
+        closeButton.addEventListener('click', closeModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Class modal functionality
+        function openClassModal(className) {
+    const classInfo = classDetails[className];
+    if (classInfo) {
+        document.getElementById('className').textContent = className;
+        document.getElementById('classVersion').textContent = `Since: ${classInfo.version}`;
+        document.getElementById('classPackage').textContent = classInfo.package;
+        document.getElementById('classImplements').textContent = classInfo.implements.join(', ');
+        document.getElementById('classDescription').textContent = classInfo.description;
+        
+        const characteristicsList = document.getElementById('classCharacteristics');
+        characteristicsList.innerHTML = '';
+        classInfo.characteristics.forEach(char => {
+            const li = document.createElement('li');
+            li.textContent = char;
+            characteristicsList.appendChild(li);
+        });
+        
+        document.getElementById('classUsage').textContent = classInfo.commonUsage;
+        document.getElementById('classModal').style.display = 'flex';
+    }
+}
+
+// Add click handlers for class links
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.class-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            openClassModal(this.getAttribute('data-class'));
+        });
+    });
+
+    // Close class modal
+    document.getElementById('closeClassModal').addEventListener('click', () => {
+        document.getElementById('classModal').style.display = 'none';
+    });
+});
+    </script>
+</body>
+</html>
